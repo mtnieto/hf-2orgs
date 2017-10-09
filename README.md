@@ -37,3 +37,21 @@ $GOPATH/bin/configtxgen -profile fcachannel -outputCreateChannelTx ./channel-art
 
 ```
 It is necessary to be equal to the variables defined in the configtx.yaml file. Be careful with the channelID, uppercases are considered like ilegal characters.
+
+## Executing the network ##
+
+Once the configuration is defined and all the files modified, to run the network execute the following command:
+
+```
+./fabricOps.sh start
+
+```
+
+With every change in the configuration it is necessary to execute the following command:
+
+```
+./fabricOps.sh clean
+
+```
+
+NOTE: You must not delete the command line in the script where the docker images are removed.

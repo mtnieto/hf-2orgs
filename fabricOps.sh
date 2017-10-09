@@ -162,8 +162,8 @@ case $COMMAND in
         generateCerts
         generateChannelArtifacts
         replacePrivateKey
-        # pullDockerImages
-        # startNetwork
+        pullDockerImages
+        startNetwork
         ;;
     "status")
         networkStatus
