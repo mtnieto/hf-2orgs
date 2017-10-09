@@ -6,7 +6,7 @@ https://github.com/hlf-go/fabrics
 
 
 ## Files ##
-The following files will be modified to create the configuration wanted.
+The following files will be modified to create the configuration desired.
 
 ### crypto-config.yaml ###
 
