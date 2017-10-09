@@ -94,7 +94,7 @@ function generateChannelArtifacts(){
 	echo "#################################################################"
 	echo "#######    Generating anchor peer update for MSP   ##########"
 	echo "#################################################################"
-    $GOPATH/bin/configtxgen -profile fcachannel -outputCreateChannelTx ./channel-artifacts/channel.tx -channelID "fcachannel"
+    $GOPATH/bin/configtxgen -profile fcachannel -outputCreateChannelTx ./channel-artifacts/fcachannel.tx -channelID "fcachannel"
 
 }
 

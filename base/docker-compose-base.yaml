@@ -43,8 +43,8 @@ services:
       - CORE_PEER_LOCALMSPID=fcaMSP
     volumes:
         - /var/run/:/host/var/run/
-        - ../crypto-config/peerOrganizations/santander.regulatory.com/peers/peer0.fca.regulatory.com/msp:/etc/hyperledger/fabric/msp
-        - ../crypto-config/peerOrganizations/santander.regulatory.com/peers/peer0.fca.regulatory.com/tls:/etc/hyperledger/fabric/tls
+        - ../crypto-config/peerOrganizations/fca.regulatory.com/peers/peer0.fca.regulatory.com/msp:/etc/hyperledger/fabric/msp
+        - ../crypto-config/peerOrganizations/fca.regulatory.com/peers/peer0.fca.regulatory.com/tls:/etc/hyperledger/fabric/tls
     ports:
       - 7051:7051
       - 7052:7052
@@ -63,5 +63,5 @@ services:
       - CORE_PEER_LOCALMSPID=bank1MSP
     volumes:
         - /var/run/:/host/var/run/
-        - ../crypto-config/peerOrganizations/cnmv.regulatory.com/peers/peer0.bank1.regulatory.com/msp:/etc/hyperledger/fabric/msp
-        - ../crypto-config/peerOrganizations/cnmv.regulatory.com/peers/peer0.bank1.regulatory.com/tls:/etc/hyperledger/fabric/tls
+        - ../crypto-config/peerOrganizations/bank1.regulatory.com/peers/peer0.bank1.regulatory.com/msp:/etc/hyperledger/fabric/msp
+        - ../crypto-config/peerOrganizations/bank1.regulatory.com/peers/peer0.bank1.regulatory.com/tls:/etc/hyperledger/fabric/tls
