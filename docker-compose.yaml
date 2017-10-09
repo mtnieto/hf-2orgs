@@ -8,10 +8,10 @@ services:
       - FABRIC_CA_SERVER_CA_NAME=ca-fca
       - FABRIC_CA_SERVER_TLS_ENABLED=true
       - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.fca.regulatory.com-cert.pem
-      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/CA1_PRIVATE_KEY
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/5e915e49e679db8866d22b25148b183bf8bf16ae5af6ae3294f0be2edb6d26a7_sk
     ports:
       - "7054:7054"
-    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.fca.regulatory.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/CA1_PRIVATE_KEY -b admin:adminpw -d'
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.fca.regulatory.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/5e915e49e679db8866d22b25148b183bf8bf16ae5af6ae3294f0be2edb6d26a7_sk -b admin:adminpw -d'
     volumes:
       - ./crypto-config/peerOrganizations/fca.regulatory.com/ca/:/etc/hyperledger/fabric-ca-server-config
     container_name: ca_peerFca
@@ -23,10 +23,10 @@ services:
       - FABRIC_CA_SERVER_CA_NAME=ca-bank1
       - FABRIC_CA_SERVER_TLS_ENABLED=true
       - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.bank1.regulatory.com-cert.pem
-      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/CA2_PRIVATE_KEY
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/a0d3c95b3ce9330709b69d130e8a80efb8a25e56ce137cf597e1c061a8d64009_sk
     ports:
       - "8054:7054"
-    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.bank1.regulatory.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/CA2_PRIVATE_KEY -b admin:adminpw -d'
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.bank1.regulatory.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/a0d3c95b3ce9330709b69d130e8a80efb8a25e56ce137cf597e1c061a8d64009_sk -b admin:adminpw -d'
     volumes:
       - ./crypto-config/peerOrganizations/bank1.regulatory.com/ca/:/etc/hyperledger/fabric-ca-server-config
     container_name: ca_peerBank1

@@ -38,7 +38,7 @@ services:
       service: peer-base
     environment:
       - CORE_PEER_ID=peer0.fca.regulatory.com
-      - CORE_PEER_ADDRESS=peer0.santander.fca.com:7051
+      - CORE_PEER_ADDRESS=peer0.fca.regulatory.com:7051
       - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.fca.regulatory.com:7051
       - CORE_PEER_LOCALMSPID=fcaMSP
     volumes:
