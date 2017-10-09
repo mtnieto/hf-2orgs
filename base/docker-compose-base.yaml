@@ -1,0 +1,67 @@
+# Copyright IBM Corp. All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+version: '2'
+
+services:
+
+  orderer.regulatory.com:
+    container_name: orderer.regulatory.com
+    image: hyperledger/fabric-orderer
+    environment:
+      - ORDERER_GENERAL_LOGLEVEL=debug
+      - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
+      - ORDERER_GENERAL_GENESISMETHOD=file
+      - ORDERER_GENERAL_GENESISFILE=/var/hyperledger/orderer/orderer.genesis.block
+      - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
+      - ORDERER_GENERAL_LOCALMSPDIR=/var/hyperledger/orderer/msp
+      # enabled TLS
+      - ORDERER_GENERAL_TLS_ENABLED=true
+      - ORDERER_GENERAL_TLS_PRIVATEKEY=/var/hyperledger/orderer/tls/server.key
+      - ORDERER_GENERAL_TLS_CERTIFICATE=/var/hyperledger/orderer/tls/server.crt
+      - ORDERER_GENERAL_TLS_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric
+    command: orderer
+    volumes:
+    - ../channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
+    - ../crypto-config/ordererOrganizations/regulatory.com/orderers/orderer.regulatory.com/msp:/var/hyperledger/orderer/msp
+    - ../crypto-config/ordererOrganizations/regulatory.com/orderers/orderer.regulatory.com/tls/:/var/hyperledger/orderer/tls
+    ports:
+      - 7050:7050
+
+  peer0.fca.regulatory.com:
+    container_name: peer0.fca.regulatory.com
+    extends:
+      file: peer-base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer0.fca.regulatory.com
+      - CORE_PEER_ADDRESS=peer0.santander.fca.com:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.fca.regulatory.com:7051
+      - CORE_PEER_LOCALMSPID=fcaMSP
+    volumes:
+        - /var/run/:/host/var/run/
+        - ../crypto-config/peerOrganizations/santander.regulatory.com/peers/peer0.fca.regulatory.com/msp:/etc/hyperledger/fabric/msp
+        - ../crypto-config/peerOrganizations/santander.regulatory.com/peers/peer0.fca.regulatory.com/tls:/etc/hyperledger/fabric/tls
+    ports:
+      - 7051:7051
+      - 7052:7052
+      - 7053:7053
+
+  peer0.bank1.regulatory.com:
+    container_name: peer0.bank1.regulatory.com
+    extends:
+      file: peer-base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer0.bank1.regulatory.com
+      - CORE_PEER_ADDRESS=peer0.bank1.regulatory.com:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.bank1.regulatory.com:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.bank1.regulatory.com:7051
+      - CORE_PEER_LOCALMSPID=bank1MSP
+    volumes:
+        - /var/run/:/host/var/run/
+        - ../crypto-config/peerOrganizations/cnmv.regulatory.com/peers/peer0.bank1.regulatory.com/msp:/etc/hyperledger/fabric/msp
+        - ../crypto-config/peerOrganizations/cnmv.regulatory.com/peers/peer0.bank1.regulatory.com/tls:/etc/hyperledger/fabric/tls
