@@ -85,3 +85,80 @@ Once we are in the docker container of the hyperledger cli tool we can execute t
 ./script/04-installBank.sh // The chaincode is installed in the bank peers
 ./script/06-instanciate.sh // The chaincode is instanciated in the network and a docker-container of the chaincode is created
 ```
+# Setting up a Distributed Hyperledger Fabric Network #
+
+Everytime we are going to distribute the network it is very important to generate first of all the certificates, and then distribute the code to the different machines.
+
+With this goal, comment the following lines of the file fabricOps.sh.
+
+```
+ generateCerts
+ generateChannelArtifacts
+ replacePrivateKey
+# pullDockerImages
+# startNetwork
+```
+
+Now, the crypto materials were generated. The next step is to comment and to uncomment the following lines of the fabricOps.sh
+
+```
+# generateCerts
+# generateChannelArtifacts
+# replacePrivateKey
+pullDockerImages
+# startNetwork
+```
+
+It is necessary to modify the following files:
+
+### 1. base/peer-base.yml ###
+
+Append the following lines to the document with the configuration desired:
+```
+extra_hosts:
+  - "orderer.regulatory.com:34.240.181.209"
+  - "peer0.fca.regulatory.com:34.240.181.209"
+  - "peer0.bank1.regulatory.com:34.248.224.23"
+```
+
+
+### 2. docker-compose-template.yml ###
+
+Append the same lines in the configuration of the cli container
+
+### NOTE: Everytime we want to connect with a peer it is neccesary to specify its domain name. If we use the IP the certificates won't work.
+
+
+## Executing the network
+
+We are going to use 2 machines. In the first machine will run the orderer, one peer and its ca, and the cli tool.
+
+In  the second machine will run the other peer and its ca.
+
+The commands to run the distributed network are the following.
+
+First machine:
+
+```
+docker-compose up -d cli
+```
+Second machine:
+
+```
+docker-compose up -d peer0.bank1.regulatory.com
+```
+
+To check if the peers of the networks are seen between them it is necessary to execute the scritps. The scripts create a channel, join banks into the channel, install the chaincode in the peers, and instanciate the chaincode in one peer.
+
+To run the scripts execute the following command:
+```
+./fabricOps.sh cli
+./scripts/01-createchannel.sh //a channel is created
+./scripts/02-joinBank.sh // An organization joins in to the channel
+./scripts/03-joinRegulator.sh //Another organization joins into the channel
+./script/04-installBank.sh // The chaincode is installed in the bank peers
+./script/06-instanciate.sh // The chaincode is instanciated in the network and a docker-container of the chaincode is created
+
+```
+
+If the execution is correct and if in the second machine a container is created, the network is running!!
