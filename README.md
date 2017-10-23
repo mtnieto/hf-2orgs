@@ -4,6 +4,12 @@ In the following repository there are basic skeletons for the network creation.
 
 https://github.com/hlf-go/fabrics
 
+### Prerequistes
+
+- Go 1.7 version
+
+- Ubuntu 16.04
+
 
 ## Files ##
 The following files will be modified to create the configuration desired.
