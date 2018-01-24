@@ -7,7 +7,7 @@ OrdererOrgs:
   # Orderer
   # ---------------------------------------------------------------------------
   - Name: Orderer
-    Domain: regulatory.com
+    Domain: myapp.com
     # ---------------------------------------------------------------------------
     # "Specs" - See PeerOrgs below for complete description
     # ---------------------------------------------------------------------------
@@ -20,8 +20,8 @@ PeerOrgs:
   # ---------------------------------------------------------------------------
   # Org1
   # ---------------------------------------------------------------------------
-  - Name: fca
-    Domain: fca.regulatory.com
+  - Name: netflix
+    Domain: netflix.myapp.com
     # ---------------------------------------------------------------------------
     # "Specs" //NUMERO DE PEERS QUE QUEREMOS POR ORG
     Template:
@@ -38,8 +38,8 @@ PeerOrgs:
   # ---------------------------------------------------------------------------
   # Org2: See "Org1" for full specification
   # ---------------------------------------------------------------------------
-  - Name: bank1
-    Domain: bank1.regulatory.com
+  - Name: hbo
+    Domain: hbo.myapp.com
     Template:
       Count: 1
     Users:

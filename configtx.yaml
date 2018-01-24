@@ -10,24 +10,24 @@
 ################################################################################
 Profiles:
 
-    FCAOrdererGenesis:
+    SeriesOrdererGenesis:
         Orderer:
             <<: *OrdererDefaults
             Organizations:
                 - *OrdererOrg
         Consortiums:
-            FCAConsortium:
+            SeriesConsortium:
                 Organizations:
-                    - *fca
-                    - *bank1
+                    - *netflix
+                    - *hbo
 
-    fcachannel:
-        Consortium: FCAConsortium
+    serieschannel:
+        Consortium: SeriesConsortium
         Application:
             <<: *ApplicationDefaults
             Organizations:
-                - *fca
-                - *bank1
+                - *netflix
+                - *hbo
 
 
 ################################################################################
@@ -51,40 +51,40 @@ Organizations:
         ID: OrdererMSP
 
         # MSPDir is the filesystem path which contains the MSP configuration
-        MSPDir: crypto-config/ordererOrganizations/regulatory.com/msp
+        MSPDir: crypto-config/ordererOrganizations/myapp.com/msp
 
-    - &fca
+    - &netflix
         # DefaultOrg defines the organization which is used in the sampleconfig
         # of the fabric.git development environment
-        Name: fcaMSP
+        Name: netflixMSP
 
         # ID to load the MSP definition as
-        ID: fcaMSP
+        ID: netflixMSP
 
-        MSPDir: crypto-config/peerOrganizations/fca.regulatory.com/msp
+        MSPDir: crypto-config/peerOrganizations/netflix.myapp.com/msp
 
         AnchorPeers:
             # AnchorPeers defines the location of peers which can be used
             # for cross org gossip communication.  Note, this value is only
             # encoded in the genesis block in the Application section context
-            - Host: peer0.fca.regulatory.com
+            - Host: peer0.netflix.myapp.com
               Port: 7051
 
-    - &bank1
+    - &hbo
         # DefaultOrg defines the organization which is used in the sampleconfig
         # of the fabric.git development environment
-        Name: bank1MSP
+        Name: hboMSP
 
         # ID to load the MSP definition as
-        ID: bank1MSP
+        ID: hboMSP
 
-        MSPDir: crypto-config/peerOrganizations/bank1.regulatory.com/msp
+        MSPDir: crypto-config/peerOrganizations/hbo.myapp.com/msp
 
         AnchorPeers:
             # AnchorPeers defines the location of peers which can be used
             # for cross org gossip communication.  Note, this value is only
             # encoded in the genesis block in the Application section context
-            - Host: peer0.bank1.regulatory.com
+            - Host: peer0.hbo.myapp.com
               Port: 7051
 
 
@@ -104,7 +104,7 @@ Orderer: &OrdererDefaults
     OrdererType: solo
 
     Addresses:
-        - orderer.regulatory.com:7050
+        - orderer.myapp.com:7050
 
     # Batch Timeout: The amount of time to wait before creating a batch
     BatchTimeout: 2s

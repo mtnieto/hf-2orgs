@@ -6,5 +6,5 @@ CORE_PEER_ADDRESS=peer0.netflix.myapp.com:7051
 CHANNEL_NAME=serieschannel
 CORE_PEER_TLS_ENABLED=true
 
-peer channel create -o orderer.myapp.com:7050 -c $CHANNEL_NAME -f ./channel-artifacts/serieschannel.tx --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA >&log.txt
+peer chaincode install -n mycontract -v 1.0 -p github.com/hyperledger/fabric/examples/chaincode/go/chaincode_example02 >&log.txt
 cat log.txt

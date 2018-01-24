@@ -20,7 +20,7 @@ FABRIC_ROOT=$GOPATH/src/github.com/hyperledger/fabric
 
 
 function pullDockerImages(){
-  local FABRIC_TAG="x86_64-1.0.0"
+  local FABRIC_TAG="x86_64-1.0.5"
   for IMAGES in peer orderer couchdb ccenv tools ca; do
       echo "==> FABRIC IMAGE: $IMAGES"
       echo
@@ -43,11 +43,11 @@ function replacePrivateKey () {
 	cp docker-compose-template.yaml docker-compose.yaml
 
     CURRENT_DIR=$PWD
-    cd crypto-config/peerOrganizations/fca.regulatory.com/ca/
+    cd crypto-config/peerOrganizations/netflix.myapp.com/ca/
     PRIV_KEY=$(ls *_sk)
     cd $CURRENT_DIR
     sed $OPTS "s/CA1_PRIVATE_KEY/${PRIV_KEY}/g" docker-compose.yaml
-    cd crypto-config/peerOrganizations/bank1.regulatory.com/ca/
+    cd crypto-config/peerOrganizations/hbo.myapp.com/ca/
     PRIV_KEY=$(ls *_sk)
     cd $CURRENT_DIR
     sed $OPTS "s/CA2_PRIVATE_KEY/${PRIV_KEY}/g" docker-compose.yaml
@@ -88,13 +88,13 @@ function generateChannelArtifacts(){
 	echo "### Generating channel configuration transaction 'channel.tx' ###"
 	echo "#################################################################"
 
-    $GOPATH/bin/configtxgen -profile FCAOrdererGenesis -outputBlock ./channel-artifacts/genesis.block
+    $GOPATH/bin/configtxgen -profile SeriesOrdererGenesis -outputBlock ./channel-artifacts/genesis.block
 
     echo
 	echo "#################################################################"
 	echo "#######    Generating anchor peer update for MSP   ##########"
 	echo "#################################################################"
-    $GOPATH/bin/configtxgen -profile fcachannel -outputCreateChannelTx ./channel-artifacts/fcachannel.tx -channelID "fcachannel"
+    $GOPATH/bin/configtxgen -profile serieschannel -outputCreateChannelTx ./channel-artifacts/serieschannel.tx -channelID "serieschannel"
 
 }
 

@@ -37,9 +37,9 @@ Change the paths of the cryptomaterials
 2. generateChannelArtifacts: Modify the following command lines
 
 ```
-$GOPATH/bin/configtxgen -profile FCAOrdererGenesis -outputBlock ./channel-artifacts/genesis.block
+$GOPATH/bin/configtxgen -profile SeriesOrdererGenesis -outputBlock ./channel-artifacts/genesis.block
 
-$GOPATH/bin/configtxgen -profile fcachannel -outputCreateChannelTx ./channel-artifacts/channel.tx -channelID "fcachannel"
+$GOPATH/bin/configtxgen -profile serieschannel -outputCreateChannelTx ./channel-artifacts/serieschannel.tx -channelID "serieschannel"
 
 ```
 It is necessary to be equal to the variables defined in the configtx.yaml file. Be careful with the channelID, uppercases are considered like ilegal characters.
@@ -86,9 +86,9 @@ Once we are in the docker container of the hyperledger cli tool we can execute t
 
 ```
 ./scripts/01-createchannel.sh //a channel is created
-./scripts/02-joinBank.sh // An organization joins in to the channel
-./scripts/03-joinRegulator.sh //Another organization joins into the channel
-./script/04-installBank.sh // The chaincode is installed in the bank peers
+./scripts/02-joinHBO.sh // An organization joins in to the channel
+./scripts/03-joinNetflix.sh //Another organization joins into the channel
+./script/04-installHBO.sh // The chaincode is installed in the hbo peer
 ./script/06-instanciate.sh // The chaincode is instanciated in the network and a docker-container of the chaincode is created
 ```
 # Setting up a Distributed Hyperledger Fabric Network #
@@ -122,9 +122,9 @@ It is necessary to modify the following files:
 Append the following lines to the document with the configuration desired:
 ```
 extra_hosts:
-  - "orderer.regulatory.com:34.240.181.209"
-  - "peer0.fca.regulatory.com:34.240.181.209"
-  - "peer0.bank1.regulatory.com:34.248.224.23"
+  - "orderer.myapp.com:34.240.181.209"
+  - "peer0.netflix.myapp.com:34.240.181.209"
+  - "peer0.hbo.myapp.com:34.248.224.23"
 ```
 
 
@@ -151,7 +151,7 @@ docker-compose up -d cli
 Second machine:
 
 ```
-docker-compose up -d peer0.bank1.regulatory.com
+docker-compose up -d peer0.bank1.myapp.com
 ```
 
 To check if the peers of the networks are seen between them it is necessary to execute the scritps. The scripts create a channel, join banks into the channel, install the chaincode in the peers, and instanciate the chaincode in one peer.
@@ -160,9 +160,9 @@ To run the scripts execute the following command:
 ```
 ./fabricOps.sh cli
 ./scripts/01-createchannel.sh //a channel is created
-./scripts/02-joinBank.sh // An organization joins in to the channel
-./scripts/03-joinRegulator.sh //Another organization joins into the channel
-./script/04-installBank.sh // The chaincode is installed in the bank peers
+./scripts/02-joinHBO.sh // An organization joins in to the channel
+./scripts/03-joinNetflix.sh //Another organization joins into the channel
+./script/04-installHBO.sh // The chaincode is installed in the hbo peer
 ./script/06-instanciate.sh // The chaincode is instanciated in the network and a docker-container of the chaincode is created
 
 ```

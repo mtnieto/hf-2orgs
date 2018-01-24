@@ -7,8 +7,8 @@ version: '2'
 
 services:
 
-  orderer.regulatory.com:
-    container_name: orderer.regulatory.com
+  orderer.myapp.com:
+    container_name: orderer.myapp.com
     image: hyperledger/fabric-orderer
     environment:
       - ORDERER_GENERAL_LOGLEVEL=debug
@@ -26,42 +26,42 @@ services:
     command: orderer
     volumes:
     - ../channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
-    - ../crypto-config/ordererOrganizations/regulatory.com/orderers/orderer.regulatory.com/msp:/var/hyperledger/orderer/msp
-    - ../crypto-config/ordererOrganizations/regulatory.com/orderers/orderer.regulatory.com/tls/:/var/hyperledger/orderer/tls
+    - ../crypto-config/ordererOrganizations/myapp.com/orderers/orderer.myapp.com/msp:/var/hyperledger/orderer/msp
+    - ../crypto-config/ordererOrganizations/myapp.com/orderers/orderer.myapp.com/tls/:/var/hyperledger/orderer/tls
     ports:
       - 7050:7050
 
-  peer0.fca.regulatory.com:
-    container_name: peer0.fca.regulatory.com
+  peer0.netflix.myapp.com:
+    container_name: peer0.netflix.myapp.com
     extends:
       file: peer-base.yaml
       service: peer-base
     environment:
-      - CORE_PEER_ID=peer0.fca.regulatory.com
-      - CORE_PEER_ADDRESS=peer0.fca.regulatory.com:7051
-      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.fca.regulatory.com:7051
-      - CORE_PEER_LOCALMSPID=fcaMSP
+      - CORE_PEER_ID=peer0.netflix.myapp.com
+      - CORE_PEER_ADDRESS=peer0.netflix.myapp.com:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.netflix.myapp.com:7051
+      - CORE_PEER_LOCALMSPID=netflixMSP
     volumes:
         - /var/run/:/host/var/run/
-        - ../crypto-config/peerOrganizations/fca.regulatory.com/peers/peer0.fca.regulatory.com/msp:/etc/hyperledger/fabric/msp
-        - ../crypto-config/peerOrganizations/fca.regulatory.com/peers/peer0.fca.regulatory.com/tls:/etc/hyperledger/fabric/tls
+        - ../crypto-config/peerOrganizations/netflix.myapp.com/peers/peer0.netflix.myapp.com/msp:/etc/hyperledger/fabric/msp
+        - ../crypto-config/peerOrganizations/netflix.myapp.com/peers/peer0.netflix.myapp.com/tls:/etc/hyperledger/fabric/tls
     ports:
       - 7051:7051
       - 7052:7052
       - 7053:7053
 
-  peer0.bank1.regulatory.com:
-    container_name: peer0.bank1.regulatory.com
+  peer0.hbo.myapp.com:
+    container_name: peer0.hbo.myapp.com
     extends:
       file: peer-base.yaml
       service: peer-base
     environment:
-      - CORE_PEER_ID=peer0.bank1.regulatory.com
-      - CORE_PEER_ADDRESS=peer0.bank1.regulatory.com:7051
-      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.bank1.regulatory.com:7051
-      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.bank1.regulatory.com:7051
-      - CORE_PEER_LOCALMSPID=bank1MSP
+      - CORE_PEER_ID=peer0.hbo.myapp.com
+      - CORE_PEER_ADDRESS=peer0.hbo.myapp.com:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.hbo.myapp.com:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.hbo.myapp.com:7051
+      - CORE_PEER_LOCALMSPID=hboMSP
     volumes:
         - /var/run/:/host/var/run/
-        - ../crypto-config/peerOrganizations/bank1.regulatory.com/peers/peer0.bank1.regulatory.com/msp:/etc/hyperledger/fabric/msp
-        - ../crypto-config/peerOrganizations/bank1.regulatory.com/peers/peer0.bank1.regulatory.com/tls:/etc/hyperledger/fabric/tls
+        - ../crypto-config/peerOrganizations/hbo.myapp.com/peers/peer0.hbo.myapp.com/msp:/etc/hyperledger/fabric/msp
+        - ../crypto-config/peerOrganizations/hbo.myapp.com/peers/peer0.hbo.myapp.com/tls:/etc/hyperledger/fabric/tls
