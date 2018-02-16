@@ -2,7 +2,7 @@
 
 In the following repository there are basic skeletons for the network creation.
 
-https://github.com/hlf-go/fabrics
+https://github.com/mtnieto/hf-template
 
 ### Prerequistes
 
