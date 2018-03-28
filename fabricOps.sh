@@ -20,8 +20,15 @@ FABRIC_ROOT=$GOPATH/src/github.com/hyperledger/fabric
 
 
 function pullDockerImages(){
-  local FABRIC_TAG="x86_64-1.0.5"
-  for IMAGES in peer orderer couchdb ccenv tools ca; do
+  local FABRIC_TAG="x86_64-1.1.0"
+  for IMAGES in peer orderer ccenv tools ca; do
+      echo "==> FABRIC IMAGE: $IMAGES"
+      echo
+      docker pull hyperledger/fabric-$IMAGES:$FABRIC_TAG
+      docker tag hyperledger/fabric-$IMAGES:$FABRIC_TAG hyperledger/fabric-$IMAGES
+  done
+   local FABRIC_TAG="x86_64-0.4.7"
+  for IMAGES in  zookeeper kafka; do
       echo "==> FABRIC IMAGE: $IMAGES"
       echo
       docker pull hyperledger/fabric-$IMAGES:$FABRIC_TAG
@@ -33,12 +40,12 @@ function replacePrivateKey () {
 
     echo # Replace key
 
-	# ARCH=`uname -s | grep Darwin`
-	# if [ "$ARCH" == "Darwin" ]; then
-	# 	OPTS="-it"
-	# else
+	ARCH=`uname -s | grep Darwin`
+	if [ "$ARCH" == "Darwin" ]; then
+		OPTS="-it"
+	else
 		OPTS="-i"
-	# fi
+	fi
 
 	cp docker-compose-template.yaml docker-compose.yaml
 
