@@ -13,6 +13,13 @@ OrdererOrgs:
     # ---------------------------------------------------------------------------
     Specs:
       - Hostname: orderer
+  - Name: Orderer2
+    Domain: myapp2.com
+    # ---------------------------------------------------------------------------
+    # "Specs" - See PeerOrgs below for complete description
+    # ---------------------------------------------------------------------------
+    Specs:
+      - Hostname: orderer2
 # ---------------------------------------------------------------------------
 # "PeerOrgs" - Definition of organizations managing peer nodes
 # ---------------------------------------------------------------------------
@@ -22,6 +29,22 @@ PeerOrgs:
   # ---------------------------------------------------------------------------
   - Name: netflix
     Domain: netflix.myapp.com
+    # ---------------------------------------------------------------------------
+    # "Specs" //NUMERO DE PEERS QUE QUEREMOS POR ORG
+    Template:
+      Count: 1
+      # Start: 5
+      # Hostname: {{.Prefix}}{{.Index}} # default
+    # ---------------------------------------------------------------------------
+    # "Users"
+    # ---------------------------------------------------------------------------
+    # Count: The number of user accounts _in addition_ to Admin
+    # ---------------------------------------------------------------------------
+    Users:
+      Count: 1
+
+  - Name: pordede
+    Domain: pordede.myapp2.com
     # ---------------------------------------------------------------------------
     # "Specs" //NUMERO DE PEERS QUE QUEREMOS POR ORG
     Template:

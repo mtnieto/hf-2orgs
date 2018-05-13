@@ -1,0 +1,16 @@
+version: '2'
+services:
+  zookeeper:
+    image: hyperledger/fabric-zookeeper
+    restart: always
+  
+
+  kafka:
+    image: hyperledger/fabric-kafka
+    restart: always
+    environment:
+         
+        - KAFKA_MESSAGE_MAX_BYTES=103809024 # 99 * 1024 * 1024 B
+        - KAFKA_REPLICA_FETCH_MAX_BYTES=103809024 # 99 * 1024 * 1024 B
+        - KAFKA_UNCLEAN_LEADER_ELECTION_ENABLE=false
+   

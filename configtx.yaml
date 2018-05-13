@@ -15,11 +15,13 @@ Profiles:
             <<: *OrdererDefaults
             Organizations:
                 - *OrdererOrg
+                - *OrdererOrg2
         Consortiums:
             SeriesConsortium:
                 Organizations:
                     - *netflix
                     - *hbo
+                    - *pordede
 
     serieschannel:
         Consortium: SeriesConsortium
@@ -28,6 +30,7 @@ Profiles:
             Organizations:
                 - *netflix
                 - *hbo
+                - *pordede
 
 
 ################################################################################
@@ -52,6 +55,18 @@ Organizations:
 
         # MSPDir is the filesystem path which contains the MSP configuration
         MSPDir: crypto-config/ordererOrganizations/myapp.com/msp
+     # SampleOrg defines an MSP using the sampleconfig.  It should never be used
+    # in production but may be used as a template for other definitions
+    - &OrdererOrg2
+        # DefaultOrg defines the organization which is used in the sampleconfig
+        # of the fabric.git development environment
+        Name: OrdererOrg2
+
+        # ID to load the MSP definition as
+        ID: Orderer2MSP
+
+        # MSPDir is the filesystem path which contains the MSP configuration
+        MSPDir: crypto-config/ordererOrganizations/myapp2.com/msp
 
     - &netflix
         # DefaultOrg defines the organization which is used in the sampleconfig
@@ -68,6 +83,22 @@ Organizations:
             # for cross org gossip communication.  Note, this value is only
             # encoded in the genesis block in the Application section context
             - Host: peer0.netflix.myapp.com
+              Port: 7051
+    - &pordede
+        # DefaultOrg defines the organization which is used in the sampleconfig
+        # of the fabric.git development environment
+        Name: pordedeMSP
+
+        # ID to load the MSP definition as
+        ID: pordedeMSP
+
+        MSPDir: crypto-config/peerOrganizations/pordede.myapp2.com/msp
+
+        AnchorPeers:
+            # AnchorPeers defines the location of peers which can be used
+            # for cross org gossip communication.  Note, this value is only
+            # encoded in the genesis block in the Application section context
+            - Host: peer0.pordede.myapp2.com
               Port: 7051
 
     - &hbo

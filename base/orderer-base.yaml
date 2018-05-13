@@ -1,0 +1,58 @@
+version: '2'
+
+services:
+
+  orderer.myapp.com:
+    container_name: orderer.myapp.com
+    image: hyperledger/fabric-orderer
+    environment:
+      - ORDERER_GENERAL_LOGLEVEL=debug
+      - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
+      - ORDERER_GENERAL_GENESISMETHOD=file
+      - ORDERER_GENERAL_GENESISFILE=/var/hyperledger/orderer/orderer.genesis.block
+      - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
+      - ORDERER_GENERAL_LOCALMSPDIR=/var/hyperledger/orderer/msp
+      # enabled TLS
+      - ORDERER_GENERAL_TLS_ENABLED=true
+      - ORDERER_GENERAL_TLS_PRIVATEKEY=/var/hyperledger/orderer/tls/server.key
+      - ORDERER_GENERAL_TLS_CERTIFICATE=/var/hyperledger/orderer/tls/server.crt
+      - ORDERER_GENERAL_TLS_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+      - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
+      - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
+      - ORDERER_KAFKA_VERBOSE=true
+    volumes:
+      - ../channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
+      - ../crypto-config/ordererOrganizations/myapp.com/orderers/orderer.myapp.com/msp:/var/hyperledger/orderer/msp
+      - ../crypto-config/ordererOrganizations/myapp.com/orderers/orderer.myapp.com/tls/:/var/hyperledger/orderer/tls
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/orderer
+    command: orderer
+    ports:
+      - '7050'
+    
+  orderer2.myapp2.com:
+    container_name: orderer2.myapp2.com
+    image: hyperledger/fabric-orderer
+    environment:
+      - ORDERER_GENERAL_LOGLEVEL=debug
+      - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
+      - ORDERER_GENERAL_GENESISMETHOD=file
+      - ORDERER_GENERAL_GENESISFILE=/var/hyperledger/orderer/orderer.genesis.block
+      - ORDERER_GENERAL_LOCALMSPID=Orderer2MSP
+      - ORDERER_GENERAL_LOCALMSPDIR=/var/hyperledger/orderer/msp
+      # enabled TLS
+      - ORDERER_GENERAL_TLS_ENABLED=true
+      - ORDERER_GENERAL_TLS_PRIVATEKEY=/var/hyperledger/orderer/tls/server.key
+      - ORDERER_GENERAL_TLS_CERTIFICATE=/var/hyperledger/orderer/tls/server.crt
+      - ORDERER_GENERAL_TLS_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+      - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
+      - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
+      - ORDERER_KAFKA_VERBOSE=true
+    volumes:
+      - ../channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
+      - ../crypto-config/ordererOrganizations/myapp2.com/orderers/orderer2.myapp2.com/msp:/var/hyperledger/orderer/msp
+      - ../crypto-config/ordererOrganizations/myapp2.com/orderers/orderer2.myapp2.com/tls/:/var/hyperledger/orderer/tls
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/orderer
+    command: orderer
+    ports:
+      - 8050:7050
+  

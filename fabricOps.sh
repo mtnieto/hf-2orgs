@@ -59,6 +59,11 @@ function replacePrivateKey () {
     cd $CURRENT_DIR
     sed $OPTS "s/CA2_PRIVATE_KEY/${PRIV_KEY}/g" docker-compose.yaml
 
+    cd crypto-config/peerOrganizations/pordede.myapp2.com/ca/
+    PRIV_KEY=$(ls *_sk)
+    cd $CURRENT_DIR
+    sed $OPTS "s/CA3_PRIVATE_KEY/${PRIV_KEY}/g" docker-compose.yaml
+
 }
 
 function generateCerts(){
@@ -143,7 +148,7 @@ function cleanNetwork() {
     # This operations removes all docker containers and images regardless
     #
     docker rm -f $(docker ps -aq)
-    docker rmi -f $(docker images -q)
+   # docker rmi -f $(docker images -q)
     docker volume rm -f $(docker volume ls -q)
 
     # This removes containers used to support the running chaincode.
