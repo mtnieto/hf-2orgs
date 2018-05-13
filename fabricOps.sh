@@ -92,7 +92,7 @@ function generateChannelArtifacts(){
 	fi
 
 	if [ ! -f $GOPATH/bin/configtxgen ]; then
-        go get github.com/hyperledger/fabric/common/configtx/tool/configtxgen
+        go get github.com/hyperledger/fabric/common/tools/configtxgen
     fi
 
     echo
