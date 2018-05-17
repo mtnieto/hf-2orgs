@@ -52,10 +52,6 @@ function replacePrivateKey () {
     cd $CURRENT_DIR
     sed $OPTS "s/CA2_PRIVATE_KEY/${PRIV_KEY}/g" docker-compose.yaml
 
-    cd crypto-config/peerOrganizations/pordede.myapp2.com/ca/
-    PRIV_KEY=$(ls *_sk)
-    cd $CURRENT_DIR
-    sed $OPTS "s/CA3_PRIVATE_KEY/${PRIV_KEY}/g" docker-compose.yaml
 
 }
 

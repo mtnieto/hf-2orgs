@@ -1,2 +1,5 @@
 channel-artifacts
 crypto-config
+configtx\.yaml
+
+docker-compose\.yaml
