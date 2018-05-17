@@ -27,20 +27,27 @@ function pullDockerImages(){
       docker pull hyperledger/fabric-$IMAGES:$FABRIC_TAG
       docker tag hyperledger/fabric-$IMAGES:$FABRIC_TAG hyperledger/fabric-$IMAGES
   done
+   local FABRIC_TAG="x86_64-0.4.7"
+  for IMAGES in  zookeeper kafka; do
+      echo "==> FABRIC IMAGE: $IMAGES"
+      echo
+      docker pull hyperledger/fabric-$IMAGES:$FABRIC_TAG
+      docker tag hyperledger/fabric-$IMAGES:$FABRIC_TAG hyperledger/fabric-$IMAGES
+  done
 }
 
 function replacePrivateKey () {
 
     echo # Replace key
 
-	# ARCH=`uname -s | grep Darwin`
-	# if [ "$ARCH" == "Darwin" ]; then
-	# 	OPTS="-it"
-	# else
+	#ARCH=`uname -s | grep Darwin`
+	#if [ "$ARCH" == "Darwin" ]; then
+	#	OPTS="-it"
+	#else
 		OPTS="-i"
-	# fi
+	#fi
 
-	cp docker-compose-template.yaml docker-compose.yaml
+	cp docker-compose-template-ordering.yaml docker-compose.yaml
 
     CURRENT_DIR=$PWD
     cd crypto-config/peerOrganizations/netflix.myapp.com/ca/
@@ -67,13 +74,13 @@ function generateCerts(){
 
     echo
 	echo "##########################################################"
-	echo "##### Generate certificates using cryptogen tool #########"
+	echo "##### Generate certificates using cryptogen  tool :) #########"
 	echo "##########################################################"
 	if [ -d ./crypto-config ]; then
 		rm -rf ./crypto-config
 	fi
 
-    $GOPATH/bin/cryptogen generate --config=./crypto-config.yaml
+    $GOPATH/bin/cryptogen generate --config=./crypto-config-ordering.yaml
     echo
 }
 
@@ -83,8 +90,8 @@ function generateChannelArtifacts(){
     if [ ! -d ./channel-artifacts ]; then
 		mkdir channel-artifacts
 	fi
-    cp configtx-solo.yaml configtx.yaml
 
+    cp configtx-ordering.yaml configtx.yaml
 
 	if [ ! -f $GOPATH/bin/configtxgen ]; then
         go get github.com/hyperledger/fabric/common/tools/configtxgen
@@ -143,7 +150,7 @@ function cleanNetwork() {
     # This operations removes all docker containers and images regardless
     #
     docker rm -f $(docker ps -aq)
-   # docker rmi -f $(docker images -q)
+    docker rmi -f $(docker images -q)
     docker volume rm -f $(docker volume ls -q)
 
     # This removes containers used to support the running chaincode.

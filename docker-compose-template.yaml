@@ -19,24 +19,6 @@ services:
       app_net:
         ipv4_address: 172.16.239.8
     
-  caPordede:
-    image: hyperledger/fabric-ca
-    environment:
-      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
-      - FABRIC_CA_SERVER_CA_NAME=ca-pordede
-      - FABRIC_CA_SERVER_TLS_ENABLED=true
-      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.pordede.myapp2.com-cert.pem
-      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/CA3_PRIVATE_KEY
-    ports:
-      - "10054:7054"
-    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.pordede.myapp2.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/CA3_PRIVATE_KEY -b admin:adminpw -d'
-    volumes:
-      - ./crypto-config/peerOrganizations/pordede.myapp2.com/ca/:/etc/hyperledger/fabric-ca-server-config
-    container_name: ca_peerPordede
-    networks:
-      app_net:
-        ipv4_address: 172.16.239.20
-
   caHbo:
     image: hyperledger/fabric-ca
     environment:
@@ -60,39 +42,15 @@ services:
       file:   base/orderer-base.yaml
       service: orderer.myapp.com
     container_name: orderer.myapp.com
-    depends_on:
-      - zookeeper0
-      - kafka0
-      - kafka1
-      - kafka2
-      - kafka3
-      - zookeeper1
-      - zookeeper2
     networks:
       app_net:
         ipv4_address: 172.16.239.10
-        
-  orderer2.myapp2.com:
-    extends:
-      file:   base/orderer-base.yaml
-      service: orderer2.myapp2.com
-    container_name: orderer2.myapp2.com
-    depends_on:
-      - zookeeper0
-      - kafka0
-      - kafka1
-      - kafka2
-      - kafka3
-      - zookeeper1
-      - zookeeper2
-    networks:
-      app_net:
-        ipv4_address: 172.16.239.23
+
 
   peer0.netflix.myapp.com:
     container_name: peer0.netflix.myapp.com
     extends:
-      file:  base/docker-compose-base.yaml
+      file:  base/docker-compose-base-solo.yaml
       service: peer0.netflix.myapp.com
     networks:
       app_net:
@@ -101,21 +59,11 @@ services:
   peer0.hbo.myapp.com:
     container_name: peer0.hbo.myapp.com
     extends:
-      file:  base/docker-compose-base.yaml
+      file:  base/docker-compose-base-solo.yaml
       service: peer0.hbo.myapp.com
     networks:
       app_net:
         ipv4_address: 172.16.239.12
-  
-  peer0.pordede.myapp2.com:
-    container_name: peer0.pordede.myapp2.com
-    extends:
-      file:  base/docker-compose-base.yaml
-      service: peer0.pordede.myapp2.com
-    networks:
-      app_net:
-        ipv4_address: 172.16.239.21
-
   cli:
     container_name: cli
     image: hyperledger/fabric-tools
@@ -147,128 +95,7 @@ services:
     networks:
       app_net:
         ipv4_address: 172.16.239.13
-  zookeeper0:
-    extends:
-      file: base/kafka-base.yaml
-      service: zookeeper
-    environment:
-      - ZOO_MY_ID=1
-      - ZOO_SERVERS=server.1=172.16.239.14:2888:3888 server.2=172.16.239.2:2888:3888 server.3=172.16.239.3:2888:3888
-    ports:
-      - 2181:2181
-      - '2888'
-      - '3888'
-    networks:
-      app_net:
-        ipv4_address: 172.16.239.14
-  zookeeper1:
-    extends:
-      file: base/kafka-base.yaml
-      service: zookeeper
-    environment:
-      - ZOO_MY_ID=2
-      - ZOO_SERVERS=server.1=172.16.239.14:2888:3888 server.2=172.16.239.2:2888:3888 server.3=172.16.239.3:2888:3888
-    ports:
-      - 2182:2181
-      - 2889:2888
-      - 3888:3889
-    networks:
-      app_net:
-        ipv4_address: 172.16.239.2
-  zookeeper2:
-    extends:
-      file: base/kafka-base.yaml
-      service: zookeeper
-    environment:
-      - ZOO_MY_ID=3
-      - ZOO_SERVERS=server.1=172.16.239.14:2888:3888 server.2=172.16.239.2:2888:3888 server.3=172.16.239.3:2888:3888
-    ports:
-      - 2183:2181
-      - 2890:2888
-      - 3890:3889
-    networks:
-      app_net:
-        ipv4_address: 172.16.239.3
-  kafka0:
-    extends:
-      file: base/kafka-base.yaml
-      service: kafka
-    environment:
-      # ========================================================================
-      #     Reference: https://kafka.apache.org/documentation/#configuration
-      # ========================================================================
-      #
-      # broker.id
-      - KAFKA_BROKER_ID=0
-      - KAFKA_MIN_INSYNC_REPLICAS=2
-      - KAFKA_DEFAULT_REPLICATION_FACTOR=3
-      - KAFKA_ZOOKEEPER_CONNECT=zookeeper0:2181,zookeeper0:2181,zookeeper1:2182,zookeeper2:2183
-    depends_on:
-      - zookeeper0
-      - zookeeper1
-      - zookeeper2
-    ports:
-        - 9092:9092
-    networks:
-      app_net:
-        ipv4_address: 172.16.239.4
-  kafka1:
-    extends:
-      file: base/kafka-base.yaml
-      service: kafka
-    environment:
-      - KAFKA_BROKER_ID=1
-      - KAFKA_DEFAULT_REPLICATION_FACTOR=3
-      - KAFKA_MIN_INSYNC_REPLICAS=2
-      - KAFKA_ZOOKEEPER_CONNECT=zookeeper0:2181,zookeeper1:2182,zookeeper2:2183
-    ports:
-        - 9093:9092
-    depends_on:
-      - zookeeper0
-      - zookeeper1
-      - zookeeper2
-    networks:
-      app_net:
-        ipv4_address: 172.16.239.5
-
-  kafka2:
-    extends:
-      file: base/kafka-base.yaml
-      service: kafka
-    environment:
-      - KAFKA_BROKER_ID=2
-      - KAFKA_DEFAULT_REPLICATION_FACTOR=3
-      - KAFKA_MIN_INSYNC_REPLICAS=2
-      - KAFKA_ZOOKEEPER_CONNECT=zookeeper0:2181,zookeeper1:2182,zookeeper2:2183
-    depends_on:
-      - zookeeper0
-      - zookeeper1
-      - zookeeper2
-    ports:
-      - 9094:9092
-    networks:
-      app_net:
-        ipv4_address: 172.16.239.6
-    
-
-  kafka3:
-    extends:
-      file: base/kafka-base.yaml
-      service: kafka
-    environment:
-      - KAFKA_BROKER_ID=3
-      - KAFKA_DEFAULT_REPLICATION_FACTOR=3
-      - KAFKA_MIN_INSYNC_REPLICAS=2
-      - KAFKA_ZOOKEEPER_CONNECT=zookeeper0:2181,zookeeper1:2182,zookeeper2:2183
-    ports:
-      - 9095:9092
-    depends_on:
-      - zookeeper0
-      - zookeeper1
-      - zookeeper2
-    networks:
-      app_net:
-        ipv4_address: 172.16.239.7
+  
 networks: 
   app_net:
     driver: bridge
