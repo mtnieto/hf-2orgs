@@ -1,34 +1,4 @@
 
----
-################################################################################
-#
-#   Profile
-#
-#   - Different configuration profiles may be encoded here to be specified
-#   as parameters to the configtxgen tool
-#
-################################################################################
-Profiles:
-
-    SeriesOrdererGenesis:
-        Orderer:
-            <<: *OrdererDefaults
-            Organizations:
-                - *OrdererOrg
-        Consortiums:
-            SeriesConsortium:
-                Organizations:
-                    - *netflix
-                    - *hbo
-
-    serieschannel:
-        Consortium: SeriesConsortium
-        Application:
-            <<: *ApplicationDefaults
-            Organizations:
-                - *netflix
-                - *hbo
-
 
 ################################################################################
 #
@@ -97,7 +67,7 @@ Organizations:
 #   genesis block for orderer related parameters
 #
 ################################################################################
-Orderer: &OrdererDefaults
+Orderer: &OrdererConfig
 
     # Orderer Type: The orderer implementation to start
     # Available types are "solo" and "kafka"
@@ -147,3 +117,33 @@ Application: &ApplicationDefaults
     # Organizations is the list of orgs which are defined as participants on
     # the application side of the network
     Organizations:
+
+
+################################################################################
+#
+#   Profile
+#
+#   - Different configuration profiles may be encoded here to be specified
+#   as parameters to the configtxgen tool
+#
+################################################################################
+Profiles:
+
+    SeriesOrdererGenesis:
+        Orderer:
+            <<: *OrdererConfig
+            Organizations:
+                - *OrdererOrg
+        Consortiums:
+            SeriesConsortium:
+                Organizations:
+                    - *netflix
+                    - *hbo
+
+    serieschannel:
+        Consortium: SeriesConsortium
+        Application:
+            <<: *ApplicationDefaults
+            Organizations:
+                - *netflix
+                - *hbo
