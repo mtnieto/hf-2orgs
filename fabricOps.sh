@@ -20,7 +20,7 @@ FABRIC_ROOT=$GOPATH/src/github.com/hyperledger/fabric
 
 
 function pullDockerImages(){
-  local FABRIC_TAG="x86_64-1.1.0"
+  local FABRIC_TAG="1.2.0"
   for IMAGES in peer orderer ccenv tools ca; do
       echo "==> FABRIC IMAGE: $IMAGES"
       echo
@@ -33,12 +33,12 @@ function replacePrivateKey () {
 
     echo # Replace key
 
-	# ARCH=`uname -s | grep Darwin`
-	# if [ "$ARCH" == "Darwin" ]; then
-	# 	OPTS="-it"
-	# else
+	ARCH=`uname -s | grep Darwin`
+	if [ "$ARCH" == "Darwin" ]; then
+		OPTS="-it"
+	else
 		OPTS="-i"
-	# fi
+	fi
 
 	cp docker-compose-template.yaml docker-compose.yaml
 
@@ -88,14 +88,26 @@ function generateChannelArtifacts(){
 	echo "### Generating channel configuration transaction 'channel.tx' ###"
 	echo "#################################################################"
 
-    $GOPATH/bin/configtxgen -profile SeriesOrdererGenesis -outputBlock ./channel-artifacts/genesis.block
-
+    $GOPATH/bin/configtxgen -profile SeriesOrdererGenesis -channelID syschain  -outputBlock ./channel-artifacts/genesis.block
+    
     echo
 	echo "#################################################################"
 	echo "#######    Generating anchor peer update for MSP   ##########"
 	echo "#################################################################"
     $GOPATH/bin/configtxgen -profile serieschannel -outputCreateChannelTx ./channel-artifacts/serieschannel.tx -channelID "serieschannel"
 
+    echo
+	echo "#################################################################"
+	echo "#######    Generating anchor peer update for Org1MSP   ##########"
+	echo "#################################################################"
+	$GOPATH/bin/configtxgen -profile serieschannel -outputAnchorPeersUpdate ./channel-artifacts/netflixMSPanchors.tx -channelID "serieschannel" -asOrg netflixMSP
+
+	echo
+	echo "#################################################################"
+	echo "#######    Generating anchor peer update for Org2MSP   ##########"
+	echo "#################################################################"
+	$GOPATH/bin/configtxgen -profile serieschannel -outputAnchorPeersUpdate ./channel-artifacts/hboMSPanchors.tx -channelID "serieschannel" -asOrg hboMSP
+	echo
 }
 
 function startNetwork() {

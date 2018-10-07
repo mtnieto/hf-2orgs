@@ -8,11 +8,16 @@ OrdererOrgs:
   # ---------------------------------------------------------------------------
   - Name: Orderer
     Domain: myapp.com
+    CA:
+        Country: US
+        Province: California
+        Locality: San Francisco
     # ---------------------------------------------------------------------------
     # "Specs" - See PeerOrgs below for complete description
     # ---------------------------------------------------------------------------
     Specs:
       - Hostname: orderer
+    
 # ---------------------------------------------------------------------------
 # "PeerOrgs" - Definition of organizations managing peer nodes
 # ---------------------------------------------------------------------------
@@ -22,17 +27,13 @@ PeerOrgs:
   # ---------------------------------------------------------------------------
   - Name: netflix
     Domain: netflix.myapp.com
-    # ---------------------------------------------------------------------------
-    # "Specs" //NUMERO DE PEERS QUE QUEREMOS POR ORG
+    EnableNodeOUs: true
+    CA:
+      Country: US
+      Province: California
+      Locality: San Francisco
     Template:
-      Count: 1
-      # Start: 5
-      # Hostname: {{.Prefix}}{{.Index}} # default
-    # ---------------------------------------------------------------------------
-    # "Users"
-    # ---------------------------------------------------------------------------
-    # Count: The number of user accounts _in addition_ to Admin
-    # ---------------------------------------------------------------------------
+      Count: 2
     Users:
       Count: 1
   # ---------------------------------------------------------------------------
@@ -40,7 +41,13 @@ PeerOrgs:
   # ---------------------------------------------------------------------------
   - Name: hbo
     Domain: hbo.myapp.com
+    EnableNodeOUs: true
+    CA:
+        Country: US
+        Province: California
+        Locality: San Francisco
     Template:
       Count: 1
     Users:
       Count: 1
+    

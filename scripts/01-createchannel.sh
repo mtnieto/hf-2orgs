@@ -5,6 +5,6 @@ CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypt
 CORE_PEER_ADDRESS=peer0.netflix.myapp.com:7051
 CHANNEL_NAME=serieschannel
 CORE_PEER_TLS_ENABLED=true
-
+ORDERER_SYSCHAN_ID=syschain
 peer channel create -o orderer.myapp.com:7050 -c $CHANNEL_NAME -f ./channel-artifacts/serieschannel.tx --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA >&log.txt
 cat log.txt
