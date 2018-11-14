@@ -6,9 +6,18 @@ https://github.com/mtnieto/hf-template
 
 ### Prerequistes
 
-- Go 1.7 version
+- Go 1.10 version
 
 - Ubuntu 16.04
+
+### First steps
+
+Execute the following commands to have the environment ready.
+`````
+sudo apt install libtool libltdl-dev // with mac brew intall libtool
+go get github.com/miekg/pkcs11
+curl -sSL http://bit.ly/2ysbOFE | bash -s 1.3.0 // or other version
+`````
 
 
 ## Files ##
