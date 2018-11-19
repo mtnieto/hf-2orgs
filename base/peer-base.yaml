@@ -27,4 +27,4 @@ services:
     #extra_host:
     #"nombrecontainer:ip"
     #                example
-    #"peer0.santander.ftl.com:12.114.121.51"
+    #"peer0.org1.example.com:12.114.121.51"
