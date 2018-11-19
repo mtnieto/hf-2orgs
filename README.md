@@ -160,10 +160,10 @@ docker-compose up -d cli
 Second machine:
 
 ```
-docker-compose up -d peer0.bank1.myapp.com
+docker-compose up -d peer0.hbo.myapp.com
 ```
 
-To check if the peers of the networks are seen between them it is necessary to execute the scritps. The scripts create a channel, join banks into the channel, install the chaincode in the peers, and instanciate the chaincode in one peer.
+To check if the peers of the networks are seen between them it is necessary to execute the scritps. The scripts create a channel, join peers into the channel, install the chaincode in the peers, and instanciate the chaincode in one peer.
 
 To run the scripts execute the following command:
 ```
