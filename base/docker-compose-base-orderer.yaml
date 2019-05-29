@@ -1,0 +1,40 @@
+
+
+version: '2'
+
+
+
+services:
+
+  orderer0.myapp.com:
+    extends:
+      file: peer-base.yaml
+      service: orderer-base
+    volumes:
+        - ../channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
+        - ../crypto-config/ordererOrganizations/myapp.com/orderers/orderer0.myapp.com/msp:/var/hyperledger/orderer/msp
+        - ../crypto-config/ordererOrganizations/myapp.com/orderers/orderer0.myapp.com/tls/:/var/hyperledger/orderer/tls
+    ports:
+      - 7050:7050
+  
+  orderer1.myapp.com:
+    extends:
+      file: peer-base.yaml
+      service: orderer-base
+    volumes:
+        - ../channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
+        - ../crypto-config/ordererOrganizations/myapp.com/orderers/orderer1.myapp.com/msp:/var/hyperledger/orderer/msp
+        - ../crypto-config/ordererOrganizations/myapp.com/orderers/orderer1.myapp.com/tls/:/var/hyperledger/orderer/tls
+    ports:
+      - 8050:7050
+  
+  orderer2.myapp.com:
+    extends:
+      file: peer-base.yaml
+      service: orderer-base
+    volumes:
+        - ../channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
+        - ../crypto-config/ordererOrganizations/myapp.com/orderers/orderer2.myapp.com/msp:/var/hyperledger/orderer/msp
+        - ../crypto-config/ordererOrganizations/myapp.com/orderers/orderer2.myapp.com/tls/:/var/hyperledger/orderer/tls
+    ports:
+      - 9050:7050

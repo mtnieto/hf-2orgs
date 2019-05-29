@@ -20,7 +20,7 @@ FABRIC_ROOT=$GOPATH/src/github.com/hyperledger/fabric
 
 
 function pullDockerImages(){
-  local FABRIC_TAG="1.3.0"
+  local FABRIC_TAG="1.4.1"
   for IMAGES in peer orderer ccenv tools ca; do
       echo "==> FABRIC IMAGE: $IMAGES"
       echo
@@ -82,17 +82,18 @@ function generateChannelArtifacts(){
 	if [ ! -f $GOPATH/bin/configtxgen ]; then
         go get github.com/hyperledger/fabric/common/tools/configtxgen
     fi
+    FABRIC_CFG_PATH="$PWD"
 
     echo
 	echo "#################################################################"
-	echo "### Generating channel configuration transaction 'channel.tx' ###"
+	echo "### Generating genesis configuration transaction 'channel.tx' ###"
 	echo "#################################################################"
 
-    $GOPATH/bin/configtxgen -profile SeriesOrdererGenesis -channelID syschain  -outputBlock ./channel-artifacts/genesis.block
-    
+    configtxgen -profile RaftConfiguration -channelID syschain -outputBlock ./channel-artifacts/genesis.block
+
     echo
 	echo "#################################################################"
-	echo "#######    Generating anchor peer update for MSP   ##########"
+	echo "#######    Generating channel configuration   ##########"
 	echo "#################################################################"
     $GOPATH/bin/configtxgen -profile serieschannel -outputCreateChannelTx ./channel-artifacts/serieschannel.tx -channelID "serieschannel"
 
@@ -148,7 +149,7 @@ function cleanNetwork() {
     # This operations removes all docker containers and images regardless
     #
     docker rm -f $(docker ps -aq)
-    docker rmi -f $(docker images -q)
+    #docker rmi -f $(docker images -q)
     docker volume rm -f $(docker volume ls -q)
 
     # This removes containers used to support the running chaincode.

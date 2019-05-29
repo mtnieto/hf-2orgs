@@ -31,11 +31,23 @@ services:
       - ./crypto-config/peerOrganizations/hbo.myapp.com/ca/:/etc/hyperledger/fabric-ca-server-config
     container_name: ca_peerHbo
 
-  orderer.myapp.com:
+  orderer0.myapp.com:
     extends:
-      file:   base/docker-compose-base.yaml
-      service: orderer.myapp.com
-    container_name: orderer.myapp.com
+      file:   base/docker-compose-base-orderer.yaml
+      service: orderer0.myapp.com
+    container_name: orderer0.myapp.com
+  
+  orderer1.myapp.com:
+    extends:
+      file:   base/docker-compose-base-orderer.yaml
+      service: orderer1.myapp.com
+    container_name: orderer1.myapp.com
+  
+  orderer2.myapp.com:
+    extends:
+      file:   base/docker-compose-base-orderer.yaml
+      service: orderer2.myapp.com
+    container_name: orderer2.myapp.com
 
   peer0.netflix.myapp.com:
     container_name: peer0.netflix.myapp.com
@@ -74,6 +86,8 @@ services:
         - ./scripts/:/opt/gopath/src/github.com/hyperledger/fabric/peer/scripts/
         - ./channel-artifacts:/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts
     depends_on:
-      - orderer.myapp.com
+      - orderer0.myapp.com
+      - orderer1.myapp.com
+      - orderer2.myapp.com
       - peer0.netflix.myapp.com
       - peer0.hbo.myapp.com
